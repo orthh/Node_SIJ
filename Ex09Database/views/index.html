@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    html페이지!!
+
+    <table border="1">
+      <tr>
+        <th>아이디</th>
+        <th>비밀번호</th>
+        <th>닉네임</th>
+      </tr>
+
+      <!-- nunjucks 반복문 -->
+      {% for item in list %}
+      <tr>
+        <td>{{item.id}}</td>
+        <td>{{item.pw}}</td>
+        <td>{{item.nick}}</td>
+        <td>
+          <button onclick="selectOne('{{item.id}}')">이 회원정보만 조회</button>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+
+    <script>
+      const selectOne = async (id) => {
+        const reqURL = `select/${id}`; // 요청 URL
+
+        await fetch(reqURL).then((res) => {
+          console.log(res);
+        });
+      };
+    </script>
+  </body>
+</html>
