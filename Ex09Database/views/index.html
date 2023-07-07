@@ -24,17 +24,72 @@
         <td>
           <button onclick="selectOne('{{item.id}}')">이 회원정보만 조회</button>
         </td>
+        <td>
+          <button
+            onclick="updateOne('{{item.id}}','{{item.pw}}','{{item.nick}}')"
+          >
+            이 회원 정보 수정
+          </button>
+        </td>
+        <td>
+          <button onclick="location.href='/delete/{{item.id}}'">
+            이 회원 정보 삭제
+          </button>
+        </td>
       </tr>
       {% endfor %}
     </table>
 
+    <h3>특정 회원 정보 조회</h3>
+    <table border="1">
+      <tr>
+        <th>아이디</th>
+        <th>비밀번호</th>
+        <th>닉네임</th>
+      </tr>
+      <tr>
+        <td id="searchId"></td>
+        <td id="searchPw"></td>
+        <td id="searchNick"></td>
+      </tr>
+    </table>
+
+    <h3>회원 추가</h3>
+    <form action="insert" method="post">
+      <input type="text" name="id" /><br />
+      <input type="password" name="pw" /><br />
+      <input type="tel" name="nick" /><br />
+      <input type="submit" value="추가하기" />
+    </form>
+
+    <h3>회원 정보 수정</h3>
+    <form action="update" method="post">
+      <input type="text" name="id" id="updateId" readonly /><br />
+      <input type="password" name="pw" id="updatePw" /><br />
+      <input type="tel" name="nick" id="updateNick" /><br />
+      <input type="submit" value="수정하게" />
+    </form>
+
     <script>
+      // 한명의 회원정보
       const selectOne = async (id) => {
         const reqURL = `select/${id}`; // 요청 URL
+        // fetchapi -> res : promises 형태
+        await fetch(reqURL)
+          .then((res) => res.json())
+          .then((res) => {
+            document.getElementById("searchId").innerText = res.member[0].id;
+            document.getElementById("searchPw").innerText = res.member[0].pw;
+            document.getElementById("searchNick").innerText =
+              res.member[0].nick;
+          });
+      };
 
-        await fetch(reqURL).then((res) => {
-          console.log(res);
-        });
+      // 회원수정 데이터변경 함수
+      const updateOne = (id, pw, nick) => {
+        document.getElementById("updateId").value = id;
+        document.getElementById("updatePw").value = pw;
+        document.getElementById("updateNick").value = nick;
       };
     </script>
   </body>

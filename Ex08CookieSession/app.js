@@ -4,6 +4,7 @@ const cookieRouter = require("./routes/cookie");
 const sessionRouter = require("./routes/session");
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
+const fileStore = require("session-file-store")(session);
 
 app.use(cookieParser("secretkey")); // 쿠키 암호화 키 설정
 app.use(
@@ -15,6 +16,7 @@ app.use(
       // 쿠키 설정
       httpOnly: true,
     },
+    store: new fileStore(),
   })
 );
 app.use(express.json());

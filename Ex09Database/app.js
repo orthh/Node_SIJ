@@ -14,6 +14,9 @@ nunjucks.configure("views", {
   watch: true, // html파일이 연결되면 템플릿 인젠을 랜더링
 });
 
+// body 데이터
+app.use(express.urlencoded({ extended: true }));
+
 app.use("/", indexRouter); // localhost:8888/...
 
 app.set("port", process.env.PORT || 8888);
