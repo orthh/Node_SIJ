@@ -13,3 +13,5 @@ ex- String - JPA, node - Sequelize
   4-4) seeders : 테이블에 자동으로 기본 데이터 넣고 싶을 때
 5. config.js 수정 -> 실제 사용할 DB 정보로 변경!
 6. 'User' 객체 정의 -> models폴더
+7. index -> 객체 사용 정의 / -> models 폴더
+8. app.js -> sequelize 설정
