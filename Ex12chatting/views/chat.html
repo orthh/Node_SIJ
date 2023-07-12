@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <fieldset>
+      <legend>채팅 내용</legend>
+      <!-- class -> mine : 내채팅(오른쪽), other : 다른사람채팅(왼쪽) => css -->
+      <div id="chat-list"></div>
+    </fieldset>
+    <form id="chat-form">
+      <input type="text" name="chat-input" id="chatinput" />
+      <input type="submit" value="전송" />
+    </form>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+      const socket = io.connect("http://localhost:8888/chat", {
+        // /chat: chat 네임스페이스
+        path: "/socket.io",
+      });
+      document.getElementById("chat-form").addEventListener("submit", (e) => {
+        e.preventDefault(); // 서버로 바로 요청하는 기본 기능 수행x
+        // console.log(e.target.chatinput.value);
+        if (e.target.chatinput.value) {
+          // 서버로 채팅내용 전송
+          axios
+            .post("/chat/{{roomid}}/insert", {
+              chat: e.target.chatinput.value, // json
+            })
+            .then(() => {
+              console.log("success!");
+            })
+            .catch((err) => console.error(err));
+        }
+      });
+    </script>
+  </body>
+</html>

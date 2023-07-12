@@ -1,8 +1,10 @@
 const express = require("express");
 const indexRouter = require("./routes");
 const memberRouter = require("./routes/memberRouter");
+const chatRouter = require("./routes/chat");
 const nunjucks = require("nunjucks");
 const { sequelize } = require("./models");
+const webSocket = require("./socket");
 const session = require("express-session");
 const fileStore = require("session-file-store")(session);
 const app = express();
@@ -11,6 +13,8 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 // postman
 app.use(express.json());
+// body-parser (안써도 댈듯 express상위버전)
+// app.use(bodyParser.json());
 
 // 쿠키,세션설정
 app.use(
@@ -48,9 +52,12 @@ nunjucks.configure("views", {
 // 라우터 설정
 app.use("/", indexRouter);
 app.use("/member", memberRouter);
+app.use("/chat", chatRouter);
 
 // 포트 설정
 app.set("port", process.env.PORT || 8888);
-app.listen(app.get("port"), () => {
+const server = app.listen(app.get("port"), () => {
   console.log(app.get("port"), "번 포트에서 서버연결 기다리는 중 ...");
 });
+
+webSocket(server);

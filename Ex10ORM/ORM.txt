@@ -15,3 +15,10 @@ ex- String - JPA, node - Sequelize
 6. 'User' 객체 정의 -> models폴더
 7. index -> 객체 사용 정의 / -> models 폴더
 8. app.js -> sequelize 설정
+
+* seed 사용
+1. seed 생성
+-   npx sequelize seed:generate --name 테이블이름
+2. seed 실행
+-   npx sequelize db:seed --seed 파일명 (파일1개)
+-   npx sequelize-cli db:seed:all (전체 실행)

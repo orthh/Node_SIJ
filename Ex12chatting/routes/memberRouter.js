@@ -15,9 +15,9 @@ router.post("/login", async (req, res, next) => {
     });
     if (result) {
       req.session.member = result;
-      req.session.save(() => res.send("OK"));
+      req.session.save(() => res.redirect("/rooms"));
     } else {
-      res.send("정보불일치");
+      res.redirect("/");
     }
   } catch (err) {
     next(err);
