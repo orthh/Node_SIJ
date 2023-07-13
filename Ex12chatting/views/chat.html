@@ -4,12 +4,25 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
+    <link rel="stylesheet" href="/css/style.css" />
   </head>
   <body>
     <fieldset>
       <legend>채팅 내용</legend>
       <!-- class -> mine : 내채팅(오른쪽), other : 다른사람채팅(왼쪽) => css -->
-      <div id="chat-list"></div>
+      <div id="chat-list">
+        {%for chat in chats%} {%if chat.userid === userid%}
+        <div class="mine">
+          <div>{{chat.userid}}</div>
+          <div>{{chat.chat}}</div>
+        </div>
+        {%else%}
+        <div class="other">
+          <div>{{chat.userid}}</div>
+          <div>{{chat.chat}}</div>
+        </div>
+        {%endif%} {%endfor%}
+      </div>
     </fieldset>
     <form id="chat-form">
       <input type="text" name="chat-input" id="chatinput" />
@@ -22,6 +35,29 @@
         // /chat: chat 네임스페이스
         path: "/socket.io",
       });
+
+      socket.on("chat", (data) => {
+        console.log(data);
+        const div = document.createElement("div");
+        if (data.userid === "{{userid}}") {
+          // 로그인한 클라이언트가 입력한 채팅이라면
+          div.classList.add("mine");
+        } else {
+          // 다른 클라이언트
+          div.classList.add("other");
+        }
+        // 아이디 출력 div
+        const divId = document.createElement("div");
+        divId.textContent = data.userid;
+        div.appendChild(divId);
+        // 채팅 출력 div
+        const divChat = document.createElement("div");
+        divChat.textContent = data.chat;
+        div.appendChild(divChat);
+
+        document.getElementById("chat-list").appendChild(div);
+      });
+
       document.getElementById("chat-form").addEventListener("submit", (e) => {
         e.preventDefault(); // 서버로 바로 요청하는 기본 기능 수행x
         // console.log(e.target.chatinput.value);
@@ -31,8 +67,8 @@
             .post("/chat/{{roomid}}/insert", {
               chat: e.target.chatinput.value, // json
             })
-            .then(() => {
-              console.log("success!");
+            .then((data) => {
+              console.log(data);
             })
             .catch((err) => console.error(err));
         }

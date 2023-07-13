@@ -1,9 +1,11 @@
 const socketIO = require("socket.io");
 
 // express server
-module.exports = (server) => {
+module.exports = (server, app) => {
   // socketIO 객체
   const io = socketIO(server, { path: "/socket.io" });
+
+  app.set("io", io);
 
   // 라우팅(-> 네임스페이스 : 경로)
   // 채팅 -> /chat
@@ -27,6 +29,7 @@ module.exports = (server) => {
 
     socket.on("chat", (data) => {
       // data: 채팅관련데이터
+      socket.to(roomid).emit(data);
     });
   });
 };

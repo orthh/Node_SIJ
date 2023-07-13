@@ -41,6 +41,9 @@ sequelize
     console.error(err);
   });
 
+// 정적리소스 경로 지정(css,js(front-end), ..)
+app.use(express.static(__dirname + "/public"));
+
 // nunjuks 설정
 app.set("views", __dirname + "/views");
 app.set("view engine", "html");
@@ -60,4 +63,4 @@ const server = app.listen(app.get("port"), () => {
   console.log(app.get("port"), "번 포트에서 서버연결 기다리는 중 ...");
 });
 
-webSocket(server);
+webSocket(server, app);
