@@ -17,6 +17,7 @@ router.post("/login", async (req, res, next) => {
       req.session.member = result;
       req.session.save(() => res.redirect("/rooms"));
     } else {
+      console.log(rows);
       res.redirect("/");
     }
   } catch (err) {
